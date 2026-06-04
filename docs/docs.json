@@ -1,0 +1,61 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "EDD Platform",
+  "colors": {
+    "primary": "#2f6f5e",
+    "light": "#79b09d",
+    "dark": "#183f36"
+  },
+  "navbar": {
+    "primary": {
+      "type": "github",
+      "href": "https://github.com/bfalkowski/edd-platform-docs"
+    }
+  },
+  "navigation": {
+    "pages": [
+      "home",
+      "quickstart",
+      {
+        "group": "Concepts",
+        "pages": [
+          "concepts/eval-driven-design",
+          "concepts/agent-designs-and-versions",
+          "concepts/scenarios-and-eval-contracts",
+          "concepts/failure-packets",
+          "concepts/comparisons-and-gates"
+        ]
+      },
+      {
+        "group": "Architecture",
+        "pages": [
+          "architecture/overview",
+          "architecture/platform-vs-lab",
+          "architecture/langfuse-integration",
+          "architecture/data-model"
+        ]
+      },
+      {
+        "group": "Guides",
+        "pages": [
+          "guides/local-development",
+          "guides/create-first-eval-loop",
+          "guides/compare-agent-versions",
+          "guides/add-a-codex-skill"
+        ]
+      },
+      {
+        "group": "Reference",
+        "pages": [
+          "reference/glossary",
+          "reference/api-contracts",
+          "reference/skill-evals"
+        ]
+      }
+    ]
+  },
+  "contextual": {
+    "options": ["copy", "view", "chatgpt", "claude", "perplexity", "cursor", "vscode"]
+  }
+}

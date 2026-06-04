@@ -1,0 +1,30 @@
+---
+title: "Local Development"
+description: "Run the docs locally and avoid inventing app commands."
+---
+
+This repository currently exposes a documentation site under `docs/`. It does not currently include application source code, a `package.json`, a `pyproject.toml`, or project-specific dev scripts.
+
+## Documentation preview
+
+From the repository root:
+
+```bash
+cd docs
+npx mint dev
+```
+
+If Mintlify is not installed, `npx` will prompt to download it. The preview usually appears at `http://localhost:3000`.
+
+## Application setup
+
+No application runtime commands are defined in this repository today. When app source or workspace metadata is added, document the exact commands here rather than inferring them.
+
+Until then, use the root `README.md` as the source of truth for repository setup.
+
+## Contributor checklist
+
+- Keep documentation changes under `docs/` unless the repository adds a broader convention.
+- Prefer intended-design language for planned features.
+- Keep terminology aligned with the [Glossary](/reference/glossary).
+- Do not claim that an eval runner, deployment, or production workflow exists unless the repository contains it.

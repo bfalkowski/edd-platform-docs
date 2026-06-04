@@ -1,0 +1,42 @@
+---
+title: "Data Model"
+description: "Canonical EDD entities and their relationships."
+---
+
+The intended data model follows the Eval-Driven Design loop.
+
+```mermaid
+erDiagram
+  AgentDesign ||--o{ AgentVersion : has
+  AgentVersion ||--o{ Run : executes
+  Scenario ||--o{ Run : is_tested_by
+  Scenario ||--o{ EvalContract : defines_success_with
+  Run ||--o{ EvalResult : produces
+  Run ||--o{ JudgeOutput : produces
+  EvalResult ||--o{ FailurePacket : supports
+  JudgeOutput ||--o{ FailurePacket : supports
+  FailurePacket ||--o{ FixProposal : recommends
+  FixProposal ||--o{ AgentVersion : creates_candidate
+  AgentVersion ||--o{ Comparison : baseline_or_candidate
+  Comparison ||--o{ GateDecision : informs
+```
+
+## Entity summary
+
+| Entity | Purpose |
+| --- | --- |
+| `AgentDesign` | Durable intent and product contract for an agent. |
+| `AgentVersion` | Concrete revision being evaluated. |
+| `Scenario` | Situation or task the agent must handle. |
+| `EvalContract` | Criteria and evidence required to judge success. |
+| `Run` | Execution of an agent version against a scenario. |
+| `EvalResult` | Result from deterministic, metric, or rubric evaluation. |
+| `JudgeOutput` | LLM or human judgment output with rationale and score. |
+| `FailurePacket` | Evidence-backed diagnosis of a failure. |
+| `FixProposal` | Bounded recommended change. |
+| `Comparison` | Baseline versus candidate evaluation under shared conditions. |
+| `GateDecision` | Pass, fail, or review decision for a candidate. |
+
+## Evidence references
+
+Entities that depend on external evidence should carry stable references to the evidence system. For Langfuse, that may include trace IDs, observation IDs, score IDs, dataset item IDs, or artifact URLs.

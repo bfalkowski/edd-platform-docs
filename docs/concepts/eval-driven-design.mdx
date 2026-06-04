@@ -1,0 +1,52 @@
+---
+title: "Eval-Driven Design"
+description: "The product thesis behind EDD Platform."
+---
+
+Eval-Driven Design is the practice of improving agents through evidence-backed iterations.
+
+Instead of asking whether a prompt "feels better," the platform asks:
+
+- Which scenario did the agent face?
+- What behavior was expected?
+- What actually happened?
+- Which trace, score, judge output, or human note supports that diagnosis?
+- What bounded fix should be attempted?
+- Did the candidate version improve against the same scenarios and eval contracts?
+
+## The canonical loop
+
+```text
+AgentDesign
+  -> AgentVersion
+  -> Scenario
+  -> EvalContract
+  -> Run
+  -> EvalResult / JudgeOutput
+  -> FailurePacket
+  -> FixProposal
+  -> candidate AgentVersion
+  -> Comparison
+  -> GateDecision
+```
+
+Each object adds structure to the work. The goal is not to produce more metadata for its own sake. The goal is to keep agent changes connected to evidence and decisions.
+
+## Evidence over vibes
+
+Agent behavior is probabilistic, context-sensitive, and easy to overfit to memorable examples. EDD Platform is designed to make agent improvement auditable:
+
+- Scenarios preserve the user situation being tested.
+- Eval contracts define what success means before judging a run.
+- Runs and judge outputs capture observed behavior.
+- Failure packets turn raw evidence into a diagnosis.
+- Comparisons show whether a candidate version improved over a baseline.
+- Gate decisions record whether a version should move forward.
+
+## Where this fits
+
+EDD Platform is the workflow/control plane. It coordinates versions, scenarios, failures, fixes, comparisons, and decisions.
+
+Langfuse is the evidence data plane. It stores detailed trace and eval evidence that the platform can reference.
+
+Agent labs or runners execute agents. They produce the outputs that become runs, eval results, and judge outputs.

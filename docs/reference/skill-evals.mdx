@@ -1,0 +1,37 @@
+---
+title: "Skill Evals"
+description: "How reusable agent skills can be evaluated."
+---
+
+Skills are reusable instruction packages for coding agents. Skill evals test whether those packages improve agent behavior.
+
+## Evaluation question
+
+A skill eval should answer a concrete question:
+
+> Does this skill improve the agent's behavior on a specific class of tasks?
+
+## Example eval shape
+
+| Field | Example |
+| --- | --- |
+| Scenario | "Add a focused docs page without changing application behavior." |
+| Eval contract | "All changes stay under `docs/`; links work; no unsupported production claims." |
+| Baseline | Agent without the skill. |
+| Candidate | Agent with the skill available. |
+| Evidence | Diff, command output, review notes, or trace references. |
+| Comparison | Whether the skill improved accuracy, consistency, or verification. |
+
+## Connect skill evals to EDD
+
+Skill evals can use the same EDD objects as product evals:
+
+- `Scenario` captures the coding task.
+- `EvalContract` defines the expected behavior.
+- `Run` captures the agent attempt.
+- `FailurePacket` diagnoses missed instructions.
+- `FixProposal` recommends changes to the skill.
+- `Comparison` evaluates with and without the skill.
+- `GateDecision` decides whether the skill update should be accepted.
+
+No live skill eval runner is defined in this repository today. When one is added, document the exact command and result format.

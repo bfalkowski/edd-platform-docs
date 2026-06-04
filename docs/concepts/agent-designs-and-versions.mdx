@@ -1,0 +1,23 @@
+---
+title: "Agent Designs and Versions"
+description: "How EDD Platform separates an agent's intent from its concrete revisions."
+---
+
+An `AgentDesign` represents the durable product intent for an agent. It captures what the agent is supposed to do, the audience it serves, the constraints it should respect, and the quality bar it must meet.
+
+An `AgentVersion` is a concrete revision of that design. A version may include prompt text, tool configuration, model settings, skill references, runner configuration, or implementation pointers.
+
+## Why versions matter
+
+Without versions, it is hard to know what changed between a passing run and a failing run. EDD Platform treats versions as comparison targets:
+
+- A baseline `AgentVersion` represents the current known state.
+- A candidate `AgentVersion` represents a proposed fix or improvement.
+- A `Comparison` evaluates both against the same scenarios and eval contracts.
+- A `GateDecision` records whether the candidate should advance.
+
+## Design versus implementation
+
+The design is the product-level contract. The version is the concrete thing being tested.
+
+This distinction lets the platform ask whether a new version still satisfies the same design intent, instead of only asking whether it produced a good answer once.

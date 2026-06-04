@@ -1,0 +1,38 @@
+---
+title: "Create a First Eval Loop"
+description: "A practical outline for using the EDD workflow."
+---
+
+This guide describes the intended workflow for creating an initial Eval-Driven Design loop.
+
+## 1. Define the design
+
+Create an `AgentDesign` that states what the agent is responsible for, who it serves, and what quality expectations matter.
+
+## 2. Create a baseline version
+
+Create an `AgentVersion` for the current implementation. Include enough configuration detail to reproduce the behavior later.
+
+## 3. Add scenarios
+
+Write scenarios that represent meaningful user situations. Start with a small set that covers high-value behavior and known risk areas.
+
+## 4. Attach eval contracts
+
+For each scenario or scenario group, define an `EvalContract`. The contract should explain expected behavior, failure conditions, scoring, and required evidence.
+
+## 5. Run the baseline
+
+Use an agent lab, runner, or manual workflow to execute the baseline version. Capture trace and eval evidence in Langfuse when available, then record run metadata in the platform.
+
+## 6. Diagnose failures
+
+Create `FailurePacket` records for meaningful failures. Each packet should include expected behavior, observed behavior, evidence references, a failure category, suspected cause, and a bounded fix recommendation.
+
+## 7. Propose a candidate
+
+Turn approved fix proposals into a candidate `AgentVersion`.
+
+## 8. Compare and decide
+
+Run a `Comparison` between the baseline and candidate against the same scenarios and eval contracts. Use the result to make a `GateDecision`.

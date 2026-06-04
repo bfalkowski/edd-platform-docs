@@ -1,0 +1,33 @@
+:root {
+  --edd-ink: #17211f;
+  --edd-muted: #5b6864;
+  --edd-green: #2f6f5e;
+  --edd-blue: #2f5f8f;
+  --edd-line: rgba(47, 111, 94, 0.18);
+}
+
+.mintlify-content h1,
+.mintlify-content h2,
+.mintlify-content h3 {
+  letter-spacing: 0;
+}
+
+.mintlify-content h1 {
+  color: var(--edd-ink);
+}
+
+.mintlify-content p {
+  color: var(--edd-muted);
+}
+
+.mintlify-content table {
+  font-size: 0.95rem;
+}
+
+.mintlify-content code {
+  border-color: var(--edd-line);
+}
+
+.mintlify-content a {
+  text-underline-offset: 0.18em;
+}

@@ -1,0 +1,23 @@
+---
+title: "Glossary"
+description: "Canonical EDD Platform terminology."
+---
+
+Use these terms consistently across product docs, architecture docs, and implementation work.
+
+| Term | Meaning |
+| --- | --- |
+| `AgentDesign` | Durable product intent for an agent: purpose, constraints, quality bar, and scope. |
+| `AgentVersion` | Concrete revision of an agent design, including prompts, configuration, tools, skills, or implementation references. |
+| `Scenario` | A user situation or task used to evaluate agent behavior. |
+| `EvalContract` | Criteria and evidence requirements for judging whether a scenario passed. |
+| `Run` | Execution of an agent version against a scenario. |
+| `EvalResult` | Structured result from a deterministic check, score, rubric, or metric. |
+| `JudgeOutput` | Human or LLM judgment with rationale, score, and evidence references. |
+| `FailurePacket` | Evidence-backed unit of diagnosis for a failed or concerning behavior. |
+| `FixProposal` | Bounded recommended change derived from a failure packet. |
+| `Comparison` | Evaluation of baseline and candidate versions against the same scenarios and eval contracts. |
+| `GateDecision` | Decision to pass, fail, or review a candidate version based on comparison evidence. |
+| Langfuse | Trace and eval evidence data plane for traces, observations, scores, datasets, prompts, and artifacts. |
+| Agent Lab | Execution environment or workbench that runs agents and produces outputs. |
+| Evidence | Trace, score, judge rationale, artifact, log, screenshot, or human note used to support a diagnosis or decision. |

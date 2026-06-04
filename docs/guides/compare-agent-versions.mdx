@@ -1,0 +1,38 @@
+---
+title: "Compare Agent Versions"
+description: "Evaluate baseline and candidate versions under shared conditions."
+---
+
+Comparisons are how EDD Platform proves improvement.
+
+## Inputs
+
+Before comparing, identify:
+
+- Baseline `AgentVersion`.
+- Candidate `AgentVersion`.
+- Scenario set.
+- Eval contracts.
+- Evidence source, such as Langfuse trace IDs or score IDs.
+
+## Run both versions
+
+The baseline and candidate should be evaluated against the same scenarios and eval contracts. If a scenario changes, the comparison should say so explicitly.
+
+## Review outcomes
+
+Look for:
+
+- Improvements on the targeted failure.
+- Regressions on unrelated scenarios.
+- Score changes that are supported by trace evidence.
+- Judge rationale that matches the observed behavior.
+- Cases where the eval contract is ambiguous or too weak.
+
+## Make the gate decision
+
+Use the comparison to create a `GateDecision`:
+
+- Pass when the candidate improves the target issue without unacceptable regressions.
+- Fail when the candidate does not improve the issue or creates meaningful regressions.
+- Needs review when evidence is incomplete or the eval contract is unclear.

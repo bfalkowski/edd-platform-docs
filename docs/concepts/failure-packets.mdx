@@ -1,0 +1,30 @@
+---
+title: "Failure Packets"
+description: "Evidence-backed units of diagnosis."
+---
+
+A `FailurePacket` is an evidence-backed unit of diagnosis.
+
+It turns raw eval output into an actionable record: what failed, why it appears to have failed, what evidence supports that diagnosis, and what bounded fix should be considered.
+
+## Recommended shape
+
+A failure packet should include:
+
+- Scenario: the case that exposed the issue.
+- Expected behavior: what the agent should have done.
+- Observed behavior: what the agent actually did.
+- Evidence: trace IDs, eval results, judge outputs, screenshots, logs, or human notes.
+- Failure category: the kind of failure being diagnosed.
+- Suspected cause: the likely reason for the failure.
+- Bounded fix recommendation: a specific change to try without expanding scope unnecessarily.
+
+## Why packets are useful
+
+Raw traces and scores are often too noisy to drive a fix directly. A failure packet gives reviewers a compact object they can inspect, discuss, and approve before creating a candidate `AgentVersion`.
+
+## Bounded fixes
+
+A bounded fix should be small enough to evaluate. Examples include adjusting an instruction, adding a missing constraint, changing a tool-selection rule, or adding a scenario-specific guardrail.
+
+The platform should avoid treating a failure packet as a license for broad rewrites. The point is to make the next candidate version testable.

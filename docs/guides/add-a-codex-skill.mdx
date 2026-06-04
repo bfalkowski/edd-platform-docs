@@ -1,0 +1,36 @@
+---
+title: "Add a Codex Skill"
+description: "Document reusable instruction packages for coding agents."
+---
+
+Codex and other coding agents can use skills as reusable instruction packages. A skill is typically a folder with a `SKILL.md` file and optional scripts, references, templates, or assets.
+
+This repository does not currently include a `.agents/skills` directory. If skills are added later, document them here and keep them connected to EDD concepts.
+
+## Suggested structure
+
+```text
+.agents/
+  skills/
+    example-skill/
+      SKILL.md
+      scripts/
+      references/
+      assets/
+```
+
+## What to include in `SKILL.md`
+
+A useful skill should define:
+
+- Name and description.
+- When the agent should use the skill.
+- Step-by-step workflow instructions.
+- Any required scripts or reference files.
+- Expected outputs or verification steps.
+
+## Skill evals
+
+Skill evals can test whether a skill improves coding-agent behavior. For example, an eval might compare task completion quality with and without a skill.
+
+Do not assume a live skill eval runner exists unless the repository includes one. When a runner is added, document the exact command and how results connect to `Scenario`, `EvalContract`, `Run`, and `Comparison`.

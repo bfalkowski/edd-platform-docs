@@ -1,0 +1,28 @@
+---
+title: "API Contracts"
+description: "Conceptual API contract guidance for EDD Platform."
+---
+
+This repository does not currently include API source code or an OpenAPI document. This page records conceptual contract guidance for future implementation.
+
+## Contract principles
+
+API contracts should preserve the EDD loop:
+
+```text
+AgentDesign -> AgentVersion -> Scenario -> EvalContract -> Run
+  -> EvalResult / JudgeOutput -> FailurePacket -> FixProposal
+  -> candidate AgentVersion -> Comparison -> GateDecision
+```
+
+## Recommended conventions
+
+- Use stable IDs for all workflow entities.
+- Store evidence references separately from evidence summaries.
+- Keep external evidence references typed, such as `langfuse_trace_id` or `langfuse_score_id`.
+- Make comparisons explicit about baseline version, candidate version, scenarios, and eval contracts.
+- Make gate decisions immutable or auditable after creation.
+
+## Future documentation
+
+When API source is added, replace this conceptual page with concrete endpoint documentation, request and response examples, authentication notes, and local commands for regenerating API docs.

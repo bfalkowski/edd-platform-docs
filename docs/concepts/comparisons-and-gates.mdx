@@ -1,0 +1,36 @@
+---
+title: "Comparisons and Gates"
+description: "Prove improvement by evaluating baseline and candidate versions under the same contracts."
+---
+
+A `Comparison` evaluates a baseline `AgentVersion` and a candidate `AgentVersion` against the same scenarios and eval contracts.
+
+A `GateDecision` records whether the candidate should pass, fail, or require more work.
+
+## Why one good run is not enough
+
+Agent behavior can vary across inputs, tools, model responses, and context. A candidate version should not advance because it produced one convincing output. It should advance because it performs better than the baseline under the same evaluation conditions.
+
+## Comparison inputs
+
+A comparison should identify:
+
+- Baseline `AgentVersion`.
+- Candidate `AgentVersion`.
+- Scenario set.
+- Eval contracts.
+- Run IDs and evidence references.
+- Aggregate scores and important per-scenario differences.
+- Known regressions or unresolved failures.
+
+## Gate decisions
+
+A gate decision should be reviewable after the fact. It should record:
+
+- Decision: pass, fail, or needs review.
+- Evidence summary.
+- Required follow-up work.
+- Reviewer or automation source.
+- Timestamp and version references.
+
+The intended design is to make release or merge decisions explainable without replaying every trace manually.

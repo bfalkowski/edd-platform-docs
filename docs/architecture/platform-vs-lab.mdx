@@ -1,0 +1,34 @@
+---
+title: "Platform vs Lab"
+description: "Separate workflow ownership from agent execution."
+---
+
+EDD Platform and Agent Lab serve different roles.
+
+## EDD Platform
+
+EDD Platform owns product workflow state:
+
+- What agent design is being improved.
+- Which version is the baseline or candidate.
+- Which scenarios and eval contracts apply.
+- Which failures were diagnosed.
+- Which fix proposals were approved.
+- Which comparison was run.
+- Which gate decision was made.
+
+## Agent Lab or workbench
+
+Agent Lab, workbenches, or runners execute agents. They may:
+
+- Invoke a candidate agent version.
+- Produce model and tool outputs.
+- Capture artifacts.
+- Emit run metadata.
+- Write traces and scores to Langfuse.
+
+## Why the distinction matters
+
+Execution environments can change. A team may run agents locally, in CI, through a lab UI, or through a production-like runner. The EDD workflow should remain coherent across those environments.
+
+The platform is the system of record for decisions. The lab is where behavior is produced.
