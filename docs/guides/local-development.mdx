@@ -3,7 +3,7 @@ title: "Local Development"
 description: "Run the docs locally and avoid inventing app commands."
 ---
 
-This repository currently exposes a documentation site under `docs/`. It does not currently include application source code, a `package.json`, a `pyproject.toml`, or project-specific dev scripts.
+This repository exposes the public documentation site under `docs/`. The application source lives in the EDD Platform product repo.
 
 ## Documentation preview
 
@@ -18,13 +18,55 @@ If Mintlify is not installed, `npx` will prompt to download it. The preview usua
 
 ## Application setup
 
-No application runtime commands are defined in this repository today. When app source or workspace metadata is added, document the exact commands here rather than inferring them.
+In the product repo, install web dependencies once:
 
-Until then, use the root `README.md` as the source of truth for repository setup.
+```bash
+cd apps/web
+npm install
+```
+
+Start local Postgres and the app:
+
+```bash
+docker compose up -d postgres
+./scripts/dev.sh
+```
+
+The API runs on:
+
+```text
+http://127.0.0.1:8001
+```
+
+The React console runs on Vite's reported local URL, usually:
+
+```text
+http://localhost:5173
+```
+
+## Seed the canonical demo
+
+After the app is running, seed the Sentiment Observer example from the product repo:
+
+```bash
+python scripts/seed_sentiment_observer_demo.py
+```
+
+The product repo also includes a customer triage seed script, but Sentiment Observer is the canonical walkthrough used by these docs.
+
+## Optional Langfuse
+
+Local Langfuse is optional. In the product repo:
+
+```bash
+./scripts/dev_langfuse.sh
+```
+
+Langfuse runs at `http://localhost:3001` with seeded local credentials documented in the product README.
 
 ## Contributor checklist
 
 - Keep documentation changes under `docs/` unless the repository adds a broader convention.
 - Prefer intended-design language for planned features.
 - Keep terminology aligned with the [Glossary](/reference/glossary).
-- Do not claim that an eval runner, deployment, or production workflow exists unless the repository contains it.
+- Keep screenshots aligned with the Sentiment Observer seeded demo.

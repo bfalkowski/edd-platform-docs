@@ -6,9 +6,21 @@ description: "Eval-Driven Design for AI agents."
 
 EDD Platform is a workflow and control plane for improving AI agents from evidence instead of vibes.
 
-The platform is intended to help teams design agents, define scenarios and eval contracts, run versions, capture evidence, diagnose failures, propose bounded fixes, compare candidates, and make gate decisions.
+The platform helps teams design agents, define scenarios and eval contracts, run versions, capture evidence, diagnose failures, propose bounded fixes, compare candidates, and make gate decisions.
+
+The canonical example is the **Sentiment Observer**: a conversation-monitoring agent that reviews customer support turns, detects worsening sentiment or escalation risk, and emits concise observer notes for downstream workflows.
+
+![EDD Platform showing the seeded Sentiment Observer agent](/assets/sentiment-observer-agent.png)
 
 ## The core loop
+
+The product workflow is:
+
+```text
+Observe -> Analyze -> Measure -> Improve -> Compare -> Gate
+```
+
+Under the hood, that workflow maps to the EDD object spine:
 
 ```mermaid
 flowchart LR
@@ -26,7 +38,7 @@ flowchart LR
   Comparison --> GateDecision
 ```
 
-This loop makes agent work reviewable. A prompt change or implementation change should be connected to a scenario, an expected behavior, observed evidence, a diagnosis, and a comparison against a baseline.
+This loop makes agent work reviewable. A prompt change, tool change, or workflow change should be connected to a scenario, expected behavior, observed evidence, a diagnosis, and a comparison against a baseline.
 
 ## What problem it solves
 
@@ -50,6 +62,9 @@ Agent Lab, workbenches, or external runners execute agents and produce outputs. 
 <CardGroup cols={2}>
   <Card title="Quickstart" icon="rocket" href="/quickstart">
     Understand the documentation structure and preview the Mintlify site locally.
+  </Card>
+  <Card title="Sentiment Observer Demo" icon="chart-no-axes-combined" href="/guides/sentiment-observer-demo">
+    Walk through the canonical proof-loop example with screenshots.
   </Card>
   <Card title="Eval-Driven Design" icon="route" href="/concepts/eval-driven-design">
     Learn the core product thesis and workflow.

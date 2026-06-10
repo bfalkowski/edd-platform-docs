@@ -3,11 +3,19 @@ title: "Create a First Eval Loop"
 description: "A practical outline for using the EDD workflow."
 ---
 
-This guide describes the intended workflow for creating an initial Eval-Driven Design loop.
+This guide describes the intended workflow for creating an initial Eval-Driven Design loop. The canonical example is the Sentiment Observer conversation-monitoring agent.
+
+![EDD Platform Proof loop showing a Sentiment Observer conversation test](/assets/sentiment-observer-proof-loop.png)
 
 ## 1. Define the design
 
 Create an `AgentDesign` that states what the agent is responsible for, who it serves, and what quality expectations matter.
+
+For Sentiment Observer:
+
+```text
+Review customer support conversation turns, detect worsening sentiment or escalation risk, and produce concise observer notes for downstream workflows.
+```
 
 ## 2. Create a baseline version
 
@@ -17,9 +25,19 @@ Create an `AgentVersion` for the current implementation. Include enough configur
 
 Write scenarios that represent meaningful user situations. Start with a small set that covers high-value behavior and known risk areas.
 
+For the canonical conversation test:
+
+```text
+Customer: My deployment failed after the release.
+Agent: What error are you seeing?
+Customer: The rollout says image pull backoff.
+```
+
 ## 4. Attach eval contracts
 
 For each scenario or scenario group, define an `EvalContract`. The contract should explain expected behavior, failure conditions, scoring, and required evidence.
+
+For Sentiment Observer, a good output should review the latest customer turn in context, identify worsening sentiment or escalation risk, mention the image pull backoff blocker, avoid claiming the issue is fixed, and produce concise downstream-safe observer notes.
 
 ## 5. Run the baseline
 
@@ -36,3 +54,5 @@ Turn approved fix proposals into a candidate `AgentVersion`.
 ## 8. Compare and decide
 
 Run a `Comparison` between the baseline and candidate against the same scenarios and eval contracts. Use the result to make a `GateDecision`.
+
+![EDD Platform Evidence tab showing linked proof artifacts for Sentiment Observer](/assets/sentiment-observer-evidence.png)

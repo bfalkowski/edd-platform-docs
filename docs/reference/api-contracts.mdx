@@ -1,13 +1,17 @@
 ---
 title: "API Contracts"
-description: "Conceptual API contract guidance for EDD Platform."
+description: "How the product API supports the EDD Platform workflow."
 ---
 
-This repository does not currently include API source code or an OpenAPI document. This page records conceptual contract guidance for future implementation.
+The product repo includes a FastAPI platform API and generated OpenAPI contract. The public docs should stay aligned with that API, but the generated contract itself remains in the product repo.
 
 ## Contract principles
 
-API contracts should preserve the EDD loop:
+API contracts should preserve both the product loop and the object spine:
+
+```text
+Observe -> Analyze -> Measure -> Improve -> Compare -> Gate
+```
 
 ```text
 AgentDesign -> AgentVersion -> Scenario -> EvalContract -> Run
@@ -22,7 +26,14 @@ AgentDesign -> AgentVersion -> Scenario -> EvalContract -> Run
 - Keep external evidence references typed, such as `langfuse_trace_id` or `langfuse_score_id`.
 - Make comparisons explicit about baseline version, candidate version, scenarios, and eval contracts.
 - Make gate decisions immutable or auditable after creation.
+- Keep Sentiment Observer seeded demo objects ordinary platform records, not hardcoded special cases.
 
-## Future documentation
+## Product repo references
 
-When API source is added, replace this conceptual page with concrete endpoint documentation, request and response examples, authentication notes, and local commands for regenerating API docs.
+In the product repo:
+
+- `docs/API_CONTRACT.md` explains the generated OpenAPI contract and contract-first rules.
+- `docs/openapi.json` is the generated OpenAPI document.
+- `apps/api/edd_platform_api/main.py` contains the FastAPI routes.
+- `scripts/export_openapi.py` regenerates the OpenAPI artifact.
+- `scripts/lint_openapi.py` validates expected contract coverage.

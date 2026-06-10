@@ -5,6 +5,8 @@ description: "The product thesis behind EDD Platform."
 
 Eval-Driven Design is the practice of improving agents through evidence-backed iterations.
 
+The canonical example is the Sentiment Observer, a conversation-monitoring agent that reviews customer support turns, detects worsening sentiment or escalation risk, and emits observer notes. It is useful because a single "good answer" is not enough: the platform has to prove whether the observer handles the same conversation test better after a bounded change.
+
 Instead of asking whether a prompt "feels better," the platform asks:
 
 - Which scenario did the agent face?
@@ -14,7 +16,25 @@ Instead of asking whether a prompt "feels better," the platform asks:
 - What bounded fix should be attempted?
 - Did the candidate version improve against the same scenarios and eval contracts?
 
-## The canonical loop
+## The product loop
+
+```text
+Observe -> Analyze -> Measure -> Improve -> Compare -> Gate
+```
+
+Observe: produce or import traces from agent runs, local runners, Langfuse, or other observability systems.
+
+Analyze: inspect representative runs and traces to understand how the agent fails.
+
+Measure: turn recurring failure modes into eval contracts, deterministic checks, rubric dimensions, or judge prompts.
+
+Improve: propose bounded prompt, tool, retrieval, or workflow changes linked to specific failures.
+
+Compare: rerun baseline and candidate versions against the same scenarios and eval contracts.
+
+Gate: promote only when the evidence supports the decision.
+
+## The object spine
 
 ```text
 AgentDesign
