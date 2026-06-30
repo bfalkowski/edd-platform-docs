@@ -1,20 +1,20 @@
 ---
 title: "Local Development"
-description: "Run the docs locally and avoid inventing app commands."
+description: "Run the app and docs locally."
 ---
 
 This repository exposes the public documentation site under `docs/`. The application source lives in the EDD Platform product repo.
 
 ## Documentation preview
 
-From the repository root:
+From the docs repository root:
 
 ```bash
 cd docs
 npx mint dev
 ```
 
-If Mintlify is not installed, `npx` will prompt to download it. The preview usually appears at `http://localhost:3000`.
+The preview usually appears at `http://localhost:3000`.
 
 ## Application setup
 
@@ -28,7 +28,6 @@ npm install
 Start local Postgres and the app:
 
 ```bash
-docker compose up -d postgres
 ./scripts/dev.sh
 ```
 
@@ -44,29 +43,49 @@ The React console runs on Vite's reported local URL, usually:
 http://localhost:5173
 ```
 
-## Seed the canonical demo
+## Seed the demo projects
 
-After the app is running, seed the Sentiment Observer example from the product repo:
+After the app is running, seed one or both demo projects from the product repo:
 
 ```bash
+# Sentiment Observer — canonical walkthrough used by these docs
 python scripts/seed_sentiment_observer_demo.py
+
+# Customer Triage — support ticket routing agent
+python scripts/seed_customer_triage_demo.py
 ```
 
-The product repo also includes a customer triage seed script, but Sentiment Observer is the canonical walkthrough used by these docs.
+Both scripts create an `AgentDesign`, `AgentVersion`, `Scenario`, `EvalContract`, and supporting artifacts through the API.
 
-## Optional Langfuse
+## Langfuse (required for Error Analysis)
 
-Local Langfuse is optional. In the product repo:
+Langfuse is required for the Error Analysis tab and recommended for the Proof Loop. To run it locally:
 
 ```bash
 ./scripts/dev_langfuse.sh
 ```
 
-Langfuse runs at `http://localhost:3001` with seeded local credentials documented in the product README.
+Langfuse runs at `http://localhost:3001`. Local credentials are documented in the product repo README.
+
+Without Langfuse, agent runs in the Proof Loop still execute and produce eval evidence, but no `TRACE_REF` artifacts are created and the Error Analysis tab is unavailable.
+
+## Environment variables
+
+Copy `.env.example` to `.env` and set at minimum:
+
+```bash
+ANTHROPIC_API_KEY=sk-ant-...
+```
+
+The default model is `claude-haiku-4-5-20251001`. Override with:
+
+```bash
+EDD_ANTHROPIC_MODEL=claude-sonnet-4-6
+```
 
 ## Contributor checklist
 
 - Keep documentation changes under `docs/` unless the repository adds a broader convention.
-- Prefer intended-design language for planned features.
+- Prefer "intended design" language for planned features.
 - Keep terminology aligned with the [Glossary](/reference/glossary).
 - Keep screenshots aligned with the Sentiment Observer seeded demo.

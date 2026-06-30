@@ -5,11 +5,15 @@ description: "How Langfuse acts as the trace and eval evidence data plane."
 
 Langfuse is the evidence data plane for traces, observations, scores, datasets, prompts, and related artifacts.
 
-EDD Platform should use Langfuse evidence to support diagnosis and decisions, while keeping platform workflow state focused on the EDD loop.
+## Required vs. optional
+
+Langfuse is **required** for the Error Analysis tab. Without it, the platform cannot build a review corpus from live runs or sync trace comments into `ReviewAnnotation` records.
+
+Langfuse is **recommended but optional** for the Proof Loop. When configured, agent runs, tool spans, and live judge calls appear on the same Langfuse trace, and the platform stores a `TRACE_REF` artifact with a direct link.
 
 ## Integration model
 
-The platform can store references such as:
+The platform stores references such as:
 
 - Langfuse trace IDs.
 - Observation IDs.
@@ -18,25 +22,51 @@ The platform can store references such as:
 - Prompt or prompt version references.
 - URLs or artifact references.
 
-Those references can be attached to `Run`, `EvalResult`, `JudgeOutput`, and `FailurePacket` records.
+Those references are attached to `Run`, `EvalResult`, `JudgeOutput`, `FailurePacket`, and `ReviewAnnotation` records.
 
-## What the platform should not duplicate
+## What the platform does not duplicate
 
-The platform does not need to copy every trace event, observation payload, or token-level detail into its own database. Instead, it should preserve enough references and summaries for workflow decisions, then let reviewers open the detailed evidence in Langfuse when needed.
+The platform does not copy every trace event, observation payload, or token-level detail into its own database. It preserves enough references and summaries for workflow decisions, then lets reviewers open the detailed evidence in Langfuse when needed.
 
-## Evidence lifecycle
+## Evidence lifecycle — Proof Loop
 
 ```mermaid
 sequenceDiagram
-  participant Runner as Agent runner
+  participant Runner as packages/runner
   participant LF as Langfuse
   participant EDD as EDD Platform
   participant Reviewer as Reviewer
 
   Runner->>LF: Write trace, observations, scores
   Runner->>EDD: Report run metadata and evidence IDs
-  EDD->>EDD: Create eval result or judge output
+  EDD->>EDD: Create TRACE_REF artifact
+  EDD->>EDD: Create eval result and judge output
   EDD->>EDD: Create failure packet when needed
   Reviewer->>EDD: Review diagnosis and fix proposal
   Reviewer->>LF: Inspect linked trace evidence
 ```
+
+## Evidence lifecycle — Error Analysis
+
+```mermaid
+sequenceDiagram
+  participant Reviewer as Reviewer
+  participant LF as Langfuse
+  participant EDD as EDD Platform
+
+  EDD->>LF: Pull live runs into ReviewCorpus
+  Reviewer->>LF: Open trace, add comment
+  EDD->>LF: Sync comments → ReviewAnnotation records
+  Reviewer->>EDD: Promote recurring annotations to FailureMode
+  EDD->>EDD: FailureMode informs Scenario and EvalContract
+```
+
+## Local setup
+
+To run Langfuse locally with Docker:
+
+```bash
+./scripts/dev_langfuse.sh
+```
+
+Langfuse runs at `http://localhost:3001`. Local credentials are documented in the product repo README.

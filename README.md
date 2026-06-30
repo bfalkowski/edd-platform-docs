@@ -4,7 +4,7 @@ Documentation for EDD Platform, an Eval-Driven Design platform for AI agents.
 
 EDD Platform is the workflow/control plane for designing agents, defining scenarios and eval contracts, running versions, diagnosing failures, proposing bounded fixes, comparing candidates, and making gate decisions. Langfuse is treated as the trace/eval evidence data plane.
 
-The canonical example is the Sentiment Observer: a conversation-monitoring agent that detects worsening sentiment or escalation risk in customer support conversations and produces concise observer notes.
+Two canonical examples are included: the **Sentiment Observer** (a conversation-monitoring agent that detects worsening sentiment or escalation risk) and the **Customer Triage** agent (a support ticket router). Both are seeded via scripts and exercise the full product spine.
 
 ## Docs site
 

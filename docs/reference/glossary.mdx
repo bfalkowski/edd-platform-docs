@@ -5,19 +5,44 @@ description: "Canonical EDD Platform terminology."
 
 Use these terms consistently across product docs, architecture docs, and implementation work.
 
+## Core EDD objects
+
 | Term | Meaning |
 | --- | --- |
 | `AgentDesign` | Durable product intent for an agent: purpose, constraints, quality bar, and scope. |
-| `AgentVersion` | Concrete revision of an agent design, including prompts, configuration, tools, skills, or implementation references. |
+| `AgentVersion` | Concrete revision of an agent design, including prompts, configuration, tools, skills, and implementation references. |
 | `Scenario` | A user situation or task used to evaluate agent behavior. |
-| `EvalContract` | Criteria and evidence requirements for judging whether a scenario passed. |
-| `Run` | Execution of an agent version against a scenario. |
+| `EvalContract` | Criteria and evidence requirements for judging whether a scenario passed. Includes deterministic checks and optional rubric-based judge criteria. |
+| `Run` | Execution of an agent version against a scenario. All runs are live against Anthropic. |
 | `EvalResult` | Structured result from a deterministic check, score, rubric, or metric. |
-| `JudgeOutput` | Human or LLM judgment with rationale, score, and evidence references. |
+| `JudgeOutput` | LLM or human judgment with rationale, score, and evidence references. |
 | `FailurePacket` | Evidence-backed unit of diagnosis for a failed or concerning behavior. |
 | `FixProposal` | Bounded recommended change derived from a failure packet. |
 | `Comparison` | Evaluation of baseline and candidate versions against the same scenarios and eval contracts. |
 | `GateDecision` | Decision to pass, fail, or review a candidate version based on comparison evidence. |
-| Langfuse | Trace and eval evidence data plane for traces, observations, scores, datasets, prompts, and artifacts. |
-| Agent Lab | Execution environment or workbench that runs agents and produces outputs. |
+
+## Error Analysis objects
+
+| Term | Meaning |
+| --- | --- |
+| `ReviewCorpus` | Named collection of live Langfuse runs pulled for error analysis. |
+| `ReviewItem` | Single trace entry in a review corpus, linked to a Langfuse trace. |
+| `ReviewAnnotation` | Trace comment synced from Langfuse back to the platform. |
+| `FailureMode` | Named, recurring failure pattern promoted from review annotations. Informs new scenarios and eval contracts. |
+
+## Artifact types
+
+| Term | Meaning |
+| --- | --- |
+| `RUN_RESULT` | Output artifact from an agent execution. |
+| `TRACE_REF` | Link to a Langfuse trace for a specific run. |
+| `EVAL_RESULT` | Artifact capturing the output of an eval check. |
+| `JUDGE_OUTPUT` | Artifact capturing an LLM judge evaluation with rationale. |
+
+## Infrastructure
+
+| Term | Meaning |
+| --- | --- |
+| Langfuse | Trace and eval evidence data plane. Stores traces, observations, scores, datasets, prompts, and artifacts. Required for Error Analysis. |
+| Agent Lab | Execution environment or workbench that runs agents and produces outputs. In this platform, `packages/runner` (LangGraph) serves this role. |
 | Evidence | Trace, score, judge rationale, artifact, log, screenshot, or human note used to support a diagnosis or decision. |

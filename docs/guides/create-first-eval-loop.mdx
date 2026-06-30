@@ -3,13 +3,13 @@ title: "Create a First Eval Loop"
 description: "A practical outline for using the EDD workflow."
 ---
 
-This guide describes the intended workflow for creating an initial Eval-Driven Design loop. The canonical example is the Sentiment Observer conversation-monitoring agent.
+This guide describes the workflow for creating an initial Eval-Driven Design loop using the platform UI. The canonical example is the Sentiment Observer conversation-monitoring agent.
 
-![EDD Platform Proof loop showing a Sentiment Observer conversation test](/assets/sentiment-observer-proof-loop.png)
+![EDD Platform Proof Loop showing a Sentiment Observer conversation test](/assets/sentiment-observer-proof-loop.png)
 
 ## 1. Define the design
 
-Create an `AgentDesign` that states what the agent is responsible for, who it serves, and what quality expectations matter.
+In the **Agent Design** tab, create an `AgentDesign` that states what the agent is responsible for, who it serves, and what quality expectations matter.
 
 For Sentiment Observer:
 
@@ -17,9 +17,11 @@ For Sentiment Observer:
 Review customer support conversation turns, detect worsening sentiment or escalation risk, and produce concise observer notes for downstream workflows.
 ```
 
+Enable the tools the agent is allowed to use. Tool definitions are platform-owned; the design controls which tools are active for this agent.
+
 ## 2. Create a baseline version
 
-Create an `AgentVersion` for the current implementation. Include enough configuration detail to reproduce the behavior later.
+Create an `AgentVersion` for the current implementation. Include the core instruction, model selection, and any tool or skill configuration needed to reproduce the behavior later.
 
 ## 3. Add scenarios
 
@@ -35,24 +37,30 @@ Customer: The rollout says image pull backoff.
 
 ## 4. Attach eval contracts
 
-For each scenario or scenario group, define an `EvalContract`. The contract should explain expected behavior, failure conditions, scoring, and required evidence.
+For each scenario, define an `EvalContract`. The contract should explain expected behavior, failure conditions, scoring, and required evidence.
 
 For Sentiment Observer, a good output should review the latest customer turn in context, identify worsening sentiment or escalation risk, mention the image pull backoff blocker, avoid claiming the issue is fixed, and produce concise downstream-safe observer notes.
 
+Eval contracts can include both deterministic checks (tool use, required phrases, forbidden text) and rubric-based LLM judge criteria.
+
 ## 5. Run the baseline
 
-Use an agent lab, runner, or manual workflow to execute the baseline version. Capture trace and eval evidence in Langfuse when available, then record run metadata in the platform.
+In the **Proof Loop** tab, select your test case and run the baseline version. All runs are live against Anthropic — there is no mock mode. The platform captures `RUN_RESULT`, `EVAL_RESULT`, `JUDGE_OUTPUT`, and (if Langfuse is configured) a `TRACE_REF` artifact.
 
 ## 6. Diagnose failures
 
-Create `FailurePacket` records for meaningful failures. Each packet should include expected behavior, observed behavior, evidence references, a failure category, suspected cause, and a bounded fix recommendation.
+If the run fails, the wizard prompts you to name the failure and create a `FailurePacket`. Each packet includes expected behavior, observed behavior, evidence references, a failure category, suspected cause, and a bounded fix recommendation.
 
 ## 7. Propose a candidate
 
-Turn approved fix proposals into a candidate `AgentVersion`.
+Review the `FixProposal` generated from the failure packet and approve a bounded change. This produces a candidate `AgentVersion`.
 
 ## 8. Compare and decide
 
-Run a `Comparison` between the baseline and candidate against the same scenarios and eval contracts. Use the result to make a `GateDecision`.
+The wizard reruns baseline and candidate against the same scenario and eval contract. Review score deltas, judge rationale, and any regressions before recording a `GateDecision`.
 
 ![EDD Platform Evidence tab showing linked proof artifacts for Sentiment Observer](/assets/sentiment-observer-evidence.png)
+
+## Next steps
+
+Once you have a working eval loop, use [Error Analysis](/guides/error-analysis-wizard) to build failure modes from live production traces and feed them back into new scenarios and eval contracts.

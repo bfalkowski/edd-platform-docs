@@ -1,6 +1,6 @@
 ---
 title: "Sentiment Observer Demo"
-description: "Walk through the canonical EDD Platform example."
+description: "Walk through the canonical EDD Platform proof-loop example."
 ---
 
 The Sentiment Observer is the canonical EDD Platform example. It is a conversation-monitoring agent that reviews support turns, identifies worsening sentiment or escalation risk, and writes concise observer notes that can be used by downstream workflows.
@@ -17,16 +17,28 @@ The seeded demo walks through the EDD loop:
 Observe -> Analyze -> Measure -> Improve -> Compare -> Gate
 ```
 
-The proof-loop UI keeps the work tied to platform artifacts:
+The Proof Loop wizard ties each step to platform artifacts:
 
-- `Scenario`: the conversation test.
-- `EvalContract`: the expected observer behavior and judge criteria.
-- `Run`: baseline or candidate execution.
-- `EvalResult` and `JudgeOutput`: pass/fail evidence and rationale.
-- `FailurePacket`: diagnosis when the run fails.
-- `FixProposal`: bounded change to try.
-- `Comparison`: baseline versus candidate evidence.
-- `GateDecision`: promotion decision.
+- `Scenario` — the conversation test.
+- `EvalContract` — the expected observer behavior and judge criteria.
+- `Run` — baseline or candidate execution (live against Anthropic).
+- `EvalResult` and `JudgeOutput` — pass/fail evidence and rationale.
+- `FailurePacket` — diagnosis when the run fails.
+- `FixProposal` — bounded change to try.
+- `Comparison` — baseline versus candidate evidence.
+- `GateDecision` — promotion decision.
+
+## The Proof Loop wizard
+
+The Proof Loop tab walks through a 7-step guided flow:
+
+1. **Describe** — select a test case (scenario + eval contract).
+2. **Review** — confirm the agent design and version being tested.
+3. **Run** — execute the agent live against Anthropic. All runs are live; there is no mock mode.
+4. **Name failure** — if the run fails, name the failure mode and create a `FailurePacket`.
+5. **Fix** — review the `FixProposal` and approve a bounded change.
+6. **Compare** — rerun baseline and candidate and surface score deltas.
+7. **Done** — record the `GateDecision`.
 
 ## Conversation test
 
@@ -40,17 +52,17 @@ Customer: The rollout says image pull backoff.
 
 The eval contract expects the observer to review the latest customer turn in context, identify that sentiment or escalation risk is worsening, mention the image pull backoff blocker, avoid claiming the issue is fixed, and produce concise downstream-safe observer notes.
 
-![EDD Platform Proof loop showing a Sentiment Observer conversation test](/assets/sentiment-observer-proof-loop.png)
+![EDD Platform Proof Loop showing a Sentiment Observer conversation test](/assets/sentiment-observer-proof-loop.png)
 
 ## Evidence tab
 
-The Evidence tab collects linked proof artifacts for the selected agent. Reviewers can inspect trace refs, success criteria, agent versions, and agent designs without losing the product decision context.
+The Evidence tab collects all linked proof artifacts for the selected agent: trace references, eval results, judge outputs, agent versions, and designs. Reviewers can inspect the full artifact history without losing the product decision context.
 
 ![EDD Platform Evidence tab showing linked proof artifacts for Sentiment Observer](/assets/sentiment-observer-evidence.png)
 
 ## Langfuse evidence
 
-Langfuse remains the observability and experiment infrastructure. When live tracing is configured, agent runs, tool spans, and live judge calls appear on the same trace. The platform stores references and summaries so the gate decision remains in EDD Platform while raw execution detail remains available in Langfuse.
+When Langfuse is configured, agent runs, tool spans, and live judge calls appear on the same trace. The platform stores a `TRACE_REF` artifact with a direct link. The gate decision lives in EDD Platform; raw execution detail stays in Langfuse.
 
 ![Langfuse trace showing the live judge generation for a Sentiment Observer eval](/assets/langfuse-live-judge-trace.png)
 
@@ -63,4 +75,4 @@ From the product repo, start the app and seed the demo:
 python scripts/seed_sentiment_observer_demo.py
 ```
 
-Use [Local development](/guides/local-development) for the full setup sequence.
+Use [Local development](/guides/local-development) for the full setup sequence including Langfuse.

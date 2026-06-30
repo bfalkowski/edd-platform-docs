@@ -7,6 +7,12 @@ A `FailurePacket` is an evidence-backed unit of diagnosis.
 
 It turns raw eval output into an actionable record: what failed, why it appears to have failed, what evidence supports that diagnosis, and what bounded fix should be considered.
 
+## Two paths to a failure packet
+
+**From the Proof Loop wizard** — when a run fails evaluation, the wizard guides the reviewer through naming the failure and creating a `FailurePacket` inline. This path is test-driven: a specific scenario and eval contract surfaced the issue.
+
+**From Error Analysis** — when reviewing live Langfuse traces, recurring patterns are promoted to named `FailureMode` objects. A `FailureMode` can then produce a `FailurePacket` that is grounded in production behavior rather than a synthetic test.
+
 ## Recommended shape
 
 A failure packet should include:

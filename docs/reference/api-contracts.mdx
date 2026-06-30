@@ -1,39 +1,46 @@
 ---
 title: "API Contracts"
-description: "How the product API supports the EDD Platform workflow."
+description: "How the platform API is structured and where to find the generated spec."
 ---
 
-The product repo includes a FastAPI platform API and generated OpenAPI contract. The public docs should stay aligned with that API, but the generated contract itself remains in the product repo.
+The product repo includes a FastAPI platform API and a generated OpenAPI contract. Public docs stay aligned with the API; the generated contract lives in the product repo.
 
 ## Contract principles
 
-API contracts should preserve both the product loop and the object spine:
+The API preserves the product loop and object spine:
 
 ```text
 Observe -> Analyze -> Measure -> Improve -> Compare -> Gate
-```
 
-```text
 AgentDesign -> AgentVersion -> Scenario -> EvalContract -> Run
   -> EvalResult / JudgeOutput -> FailurePacket -> FixProposal
   -> candidate AgentVersion -> Comparison -> GateDecision
 ```
 
-## Recommended conventions
+Error Analysis objects extend the spine:
+
+```text
+ReviewCorpus -> ReviewItem -> ReviewAnnotation -> FailureMode
+```
+
+## Conventions
 
 - Use stable IDs for all workflow entities.
-- Store evidence references separately from evidence summaries.
-- Keep external evidence references typed, such as `langfuse_trace_id` or `langfuse_score_id`.
-- Make comparisons explicit about baseline version, candidate version, scenarios, and eval contracts.
+- Store evidence references separately from summaries.
+- Keep external evidence references typed (e.g., `langfuse_trace_id`, `langfuse_score_id`).
+- Make comparisons explicit about baseline, candidate, scenarios, and contracts.
 - Make gate decisions immutable or auditable after creation.
-- Keep Sentiment Observer seeded demo objects ordinary platform records, not hardcoded special cases.
+- Keep the Sentiment Observer seeded demo as ordinary platform records, not hardcoded special cases.
 
 ## Product repo references
 
-In the product repo:
+| File | Purpose |
+| --- | --- |
+| `docs/API_CONTRACT.md` | Explains the generated contract and contract-first rules. |
+| `docs/openapi.json` | Generated OpenAPI document. |
+| `apps/api/edd_platform_api/main.py` | FastAPI route definitions. |
+| `apps/api/edd_platform_api/schemas.py` | Pydantic request and response models. |
+| `scripts/export_openapi.py` | Regenerates the OpenAPI artifact. |
+| `scripts/lint_openapi.py` | Validates expected contract coverage. |
 
-- `docs/API_CONTRACT.md` explains the generated OpenAPI contract and contract-first rules.
-- `docs/openapi.json` is the generated OpenAPI document.
-- `apps/api/edd_platform_api/main.py` contains the FastAPI routes.
-- `scripts/export_openapi.py` regenerates the OpenAPI artifact.
-- `scripts/lint_openapi.py` validates expected contract coverage.
+The API runs on `http://127.0.0.1:8001` in local development. Interactive docs are available at `http://127.0.0.1:8001/docs`.

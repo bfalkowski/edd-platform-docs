@@ -41,6 +41,7 @@
         "pages": [
           "guides/local-development",
           "guides/sentiment-observer-demo",
+          "guides/error-analysis-wizard",
           "guides/create-first-eval-loop",
           "guides/compare-agent-versions",
           "guides/add-a-codex-skill"

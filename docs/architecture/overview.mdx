@@ -3,42 +3,56 @@ title: "Architecture Overview"
 description: "The EDD Platform architecture at a glance."
 ---
 
-EDD Platform is intended to sit between agent execution environments and evidence stores.
+EDD Platform sits between agent execution environments and evidence stores.
 
 ```mermaid
 flowchart TB
-  UI["EDD Platform UI"] --> Workflow["Workflow state"]
+  UI["EDD Platform UI\n(React / Vite)"] --> API["Platform API\n(FastAPI)"]
+  API --> Workflow["Workflow state\n(Postgres)"]
   Workflow --> Versions["AgentDesign / AgentVersion"]
   Workflow --> Evaluation["Scenario / EvalContract / Run"]
   Workflow --> Diagnosis["FailurePacket / FixProposal"]
   Workflow --> Decisions["Comparison / GateDecision"]
+  Workflow --> ErrorAnalysis["ReviewCorpus / ReviewItem\nReviewAnnotation / FailureMode"]
 
-  Runners["Agent Lab / runners"] --> Evaluation
-  Runners --> Langfuse["Langfuse evidence data plane"]
-  Langfuse --> Evaluation
+  Runner["packages/runner\n(LangGraph)"] --> API
+  Runner --> Langfuse["Langfuse\nevidence data plane"]
   Langfuse --> Diagnosis
+  Langfuse --> ErrorAnalysis
 ```
 
 ## Responsibilities
 
-EDD Platform owns the workflow/control plane:
+**EDD Platform** owns the workflow/control plane:
 
 - Agent designs and versions.
 - Scenarios and eval contracts.
 - Run records and evidence references.
 - Failure packets and fix proposals.
 - Comparisons and gate decisions.
+- Review corpora, annotations, and failure modes (Error Analysis).
 - Product UI for reviewing and deciding.
 
-Langfuse owns trace and eval evidence:
+**Langfuse** owns trace and eval evidence:
 
 - Traces and observations.
 - Scores and judge outputs.
 - Datasets and prompts.
 - Evidence artifacts linked from platform records.
+- Trace comments synced to platform `ReviewAnnotation` records.
 
-Agent Lab or external runners execute agents and produce outputs. They may write evidence to Langfuse and report run metadata back to the platform.
+**packages/runner** executes agents using LangGraph. It produces run outputs, reports run metadata and evidence IDs to the platform API, and writes traces to Langfuse.
+
+## Package structure
+
+| Package | Language | Responsibility |
+| --- | --- | --- |
+| `apps/web` | TypeScript / React | Product UI, wizard flow, evidence views |
+| `apps/api` | Python / FastAPI | Project state, artifacts, judges, gates |
+| `packages/domain` | Python | Shared object vocabulary and Pydantic schemas |
+| `packages/runner` | Python / LangGraph | Agent execution harness |
+| `packages/langfuse-adapter` | Python | Trace reference and observability integration |
 
 ## Design principle
 
-The platform should reference detailed evidence without duplicating every trace payload. This keeps workflow state focused while preserving links to the underlying evidence.
+The platform references detailed evidence without duplicating every trace payload. This keeps workflow state focused while preserving links to the underlying evidence in Langfuse.
