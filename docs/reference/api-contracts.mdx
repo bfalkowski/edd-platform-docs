@@ -38,7 +38,7 @@ ReviewCorpus -> ReviewItem -> ReviewAnnotation -> FailureMode
 | --- | --- |
 | `docs/API_CONTRACT.md` | Explains the generated contract and contract-first rules. |
 | `docs/openapi.json` | Generated OpenAPI document. |
-| `apps/api/edd_platform_api/main.py` | FastAPI route definitions. |
+| `apps/api/edd_platform_api/routers/` | FastAPI route definitions, one module per resource cluster. |
 | `apps/api/edd_platform_api/schemas.py` | Pydantic request and response models. |
 | `scripts/export_openapi.py` | Regenerates the OpenAPI artifact. |
 | `scripts/lint_openapi.py` | Validates expected contract coverage. |
